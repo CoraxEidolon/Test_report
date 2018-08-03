@@ -1,0 +1,11 @@
+.fraction {
+    border-bottom-style: solid;
+    border-color: white;
+    padding-bottom: 2px;
+}
+
+.fraction-table {
+    text-align: center;
+    margin:10px;
+
+}

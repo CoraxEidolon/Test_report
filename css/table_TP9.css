@@ -1,0 +1,25 @@
+.table {
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+    text-align: center;
+}
+.table  TD, TH {
+    padding: 3px; /* Поля вокруг содержимого таблицы */
+    border: 3px solid #0e4e79; /* Параметры рамки */
+}
+
+.table TH {
+    background: #082c35; /* Цвет фона */
+}
+
+.answer{
+    background-color: #0b5b6f;
+    color: white;
+}
+
+.fraction-table{
+    height: auto;
+    border-radius: 50px 15px;
+    border: 2px solid rgba(255, 139, 3, 0.74); /* Ширина вид и цвет рамки */
+    background-color: rgba(253, 82, 2, 0.22);
+    padding: 15px;
+}

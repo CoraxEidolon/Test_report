@@ -1,0 +1,317 @@
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Протокол испытаний ТР №9</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fraction.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/table_TP9.css"/>
+    <script type="text/javascript" src="../js/Loss_of_idling.js"></script>
+    <script type="text/javascript" src="../js/Resistance_DC_windings.js"></script>
+    <script type="text/javascript" src="../js/TP9/Calculate_TP9.js"></script>
+    <script type="text/javascript" src="../js/TP9/Create_report_TP9.js"></script>
+    <script type="text/javascript" src="../js/TP9/Measurement_Impedance_TP9.js"></script>
+    <script type="text/javascript" src="../js/TP9/Listener_TP9.js"></script>
+
+    <script src="../libs/FileSaver.js"></script>
+    <script src="../libs/jszip-utils.js"></script>
+    <!-- <script src="libs/docxgen.js"></script> -->
+    <script src="../libs/docxgen.min.js"></script>
+
+
+</head>
+<body onload="onLoad()">
+<div class="button">
+    <button onclick="location.href = '../index.html'" class="btn fourth"> << Назад</button>
+    <button id="countButton" class="btn first">Считать</button>
+    <button id="reportButton" class="btn third">Отчет</button>
+</div>
+<div class="header"></div>
+<hr>
+<h1>Протокол испытаний ТР №9</h1>
+<hr>
+
+
+<h2> Потери холостого хода</h2>
+<table class="fraction-table">
+    <tr>
+        <td>Округлять до: <input min="1" type="number" id="Idling_round" value="4"></td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <th rowspan="2"> Питание</th>
+        <th rowspan="2">Закорочено</th>
+        <th>U</th>
+        <th colspan="2">Р с=<input min="0" type="number" id="Idling_Pc" value="1">/<input min="0" type="number"
+                                                                                          id="Number2" value="2"></th>
+        <th colspan="2">I c=<input min="0" type="number" id="Idling_Ic" value="1"></th>
+    </tr>
+    <tr>
+        <td>вольт</td>
+        <td>дел.</td>
+        <td>ватт</td>
+        <td>дел.</td>
+        <td>ампер</td>
+    </tr>
+    <tr>
+        <td>а – в</td>
+        <td>в – с</td>
+        <td><input type="number" min="0" id="Idling_0_0" value="380" onchange="VoltChange()"></td>
+        <td><input type="number" min="0" id="Idling_0_1" value="1"></td>
+        <td><input type="text" min="0" id="Idling_0_2" value="?" readonly class="answer"></td>
+        <td><input type="number" min="0" id="Idling_0_3" value="1"></td>
+        <td><input type="text" min="0" id="Idling_0_4" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>в – с</td>
+        <td>а – с</td>
+        <td><input type="text" min="0" id="Idling_1_0" readonly value="380" class="answer"></td>
+        <td><input type="number" min="0" id="Idling_1_1" value="1"></td>
+        <td><input type="text" min="0" id="Idling_1_2" value="?" readonly class="answer"></td>
+        <td><input type="number" min="0" id="Idling_1_3" value="1"></td>
+        <td><input type="text" min="0" id="Idling_1_4" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>а – с</td>
+        <td>а – в</td>
+        <td><input type="text" min="0" id="Idling_2_0" readonly value="380" class="answer"></td>
+        <td><input type="number" min="0" id="Idling_2_1" value="1"></td>
+        <td><input type="text" min="0" id="Idling_2_2" value="?" readonly class="answer"></td>
+        <td><input type="number" min="0" id="Idling_2_3" value="1"></td>
+        <td><input type="text" min="0" id="Idling_2_4" value="?" readonly class="answer"></td>
+    </tr>
+</table>
+<br>
+<b>PXX(завод.) = <input type="number" min="0" id="PXX_Factory" value="1"> кВт</b><br>
+Р<sub>с</sub>' = ∑ Рс/2 =<span id="SumPcAnswer">?</span> <br> <br>
+U<sub>ном.</sub>= <input type="number" min="0" id="U_nominal" value="10500"> <br>
+n=<input type="number" min="0" id="powerN" value="1.9"> <br>
+Р<sub>хх</sub> = Р<sub>с</sub>' * ( U<sub>ном.</sub>/ U<sub>изм.</sub>)<sup>n</sup> =<span
+        id="decisionPxx"></span><span id="PowerNSpan"> </span><span id="PxxAnswer">?</span> <br>
+<span id="Idling_Discrepancy"></span><span id="Idling_Discrepancy_Answer"></span> <br>
+<span id="Idling_Warning" class="warningGood"></span>
+<hr>
+
+
+<h2>Измерение полного сопротивления К.З.(Zк).</h2>
+<table class="fraction-table">
+    <tr>
+        <td>Округлять до: <input min="1" type="number" id="Impedance_round" value="4"></td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <th rowspan="2">Фаза</th>
+        <th colspan="2">U с = <br><input id="Impedance_Uc" type="number" value="1" min="0"></th>
+        <th colspan="2">I с</th>
+        <th>Z <sub>к.з.</sub></th>
+        <th>Z <sub>к.з. расч.</sub></th>
+        <th rowspan="2">ΔZк, %<br>расхождения</th>
+    </tr>
+    <tr>
+        <th>дел</th>
+        <th>вольт</th>
+        <th>дел</th>
+        <th>ампер</th>
+        <th>Ом</th>
+        <th>Ом</th>
+    </tr>
+    <tr>
+        <td>А – 0</td>
+        <td><input id="Impedance_0_0" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_0_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_0_2" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_0_3" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_0_4" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_0_5" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_0_6" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>В – 0</td>
+        <td><input id="Impedance_1_0" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_1_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_1_2" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_1_3" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_1_4" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_1_5" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_1_6" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>С – 0</td>
+        <td><input id="Impedance_2_0" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_2_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_2_2" type="number" min="0" value="1"></td>
+        <td><input id="Impedance_2_3" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_2_4" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_2_5" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="Impedance_2_6" type="text" min="0" value="?" readonly class="answer"></td>
+
+    </tr>
+</table>
+<br>
+Z<sub>к.з. расч</sub> = (<input type="number" min="0" id="Unom" value="1">/&#8730;3 *<input type="number"
+                                                                                            min="0" id="Uk"
+                                                                                            value="1">)/(100*<input
+        type="number" min="0" id="Inom" value="1">) = <span id="Zkb_Answer">?</span> Ом
+<br>
+<span id="Impedance_Warning" class="warningGood"></span>
+<hr>
+
+
+<h2>Сопротивление обмоток постоянному току</h2>
+<table class="fraction-table">
+    <tr>
+        <td>Округлять до: <input min="1" type="number" id="winding_round" value="4"></td>
+    </tr>
+</table>
+<table class="fraction-table">
+    <tr>
+        <td rowspan="2">R<sub>прив</sub>= R<sub>изм</sub> &#215;</td>
+        <td class="fraction">( <input id="coefficient" type="number" value="235"> + t<sub>зав</sub> )</td>
+    </tr>
+    <tr>
+        <td>( <input id="coefficient2" type="text" readonly class="answer" value="235"> + t<sub>изм</sub> )</td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <th colspan="5">Обмотка ВН 4 положение до прокручивания ПБВ</th>
+    </tr>
+    <tr>
+        <th>Фаза</th>
+        <th>R<sub>изм</sub>, Ом при <br>t = <input type="number" min="-40" id="Tizm_BH" value="1"></th>
+        <th>R<sub>прив</sub>, Ом к <br>t = <input type="number" min="-40" id="Tpriv_BH" value="1"></th>
+        <th>R<sub>зав</sub>, Ом при <br>t = <input type="number" min="-40" id="Tzav_BH" value="1"></th>
+        <th>%</th>
+    </tr>
+    <tr>
+        <td>А-О</td>
+        <td><input id="winding_0_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_0_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_0_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_0_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>В-О</td>
+        <td><input id="winding_1_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_1_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_1_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_1_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>С-О</td>
+        <td><input id="winding_2_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_2_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_2_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_2_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <th colspan="5">Обмотка ВН 1 положение</th>
+
+    <tr>
+        <td>А-O</td>
+        <td><input id="winding_3_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_3_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_3_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_3_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>B-O</td>
+        <td><input id="winding_4_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_4_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_4_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_4_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>C-O</td>
+        <td><input id="winding_5_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_5_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_5_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_5_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+
+    <tr>
+        <th colspan="5">Обмотка ВН 5 положение</th>
+    </tr>
+    <tr>
+        <td>А-O</td>
+        <td><input id="winding_6_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_6_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_6_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_6_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>B-O</td>
+        <td><input id="winding_7_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_7_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_7_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_7_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>C-O</td>
+        <td><input id="winding_8_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_8_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_8_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_8_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+
+
+    <tr>
+        <th colspan="5">Обмотка ВН 4 положение после прокручивания ПБВ</th>
+    </tr>
+    <tr>
+        <td>А-O</td>
+        <td><input id="winding_9_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_9_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_9_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_9_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>B-O</td>
+        <td><input id="winding_10_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_10_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_10_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_10_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>C-O</td>
+        <td><input id="winding_11_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_11_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_11_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_11_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+
+    <tr>
+        <th colspan="5">Обмотка НН</th>
+    </tr>
+    <tr>
+        <td>а-в</td>
+        <td><input id="winding_12_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_12_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_12_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_12_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>в-с</td>
+        <td><input id="winding_13_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_13_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_13_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_13_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+    <tr>
+        <td>а-с</td>
+        <td><input id="winding_14_0" type="number" min="-40" value="1"></td>
+        <td><input id="winding_14_1" type="text" min="0" value="?" readonly class="answer"></td>
+        <td><input id="winding_14_2" type="number" min="-40" value="1"></td>
+        <td><input id="winding_14_3" type="text" min="0" value="?" readonly class="answer"></td>
+    </tr>
+
+</table>
+<span id="winding_Warning"></span>
+<hr>
+<hr>
+<input type="file" id="docxTemplateInput" style="display: none;">
+
+</body>
+</html>

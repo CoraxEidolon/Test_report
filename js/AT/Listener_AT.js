@@ -5,6 +5,6 @@ function onLoad() {
     document.getElementById("Tizm_BH").addEventListener("change", Tizm);
     document.getElementById("Tpriv_BH").addEventListener("change", Tpriv);
     document.getElementById("Tzav_BH").addEventListener("change", Tzav);
-    document.getElementById("coefficient").addEventListener("change", coefficient);
+    document.getElementById("DivisionsOnOf").addEventListener("change", DivisionsOnOf);
 
 }

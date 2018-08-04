@@ -46,7 +46,7 @@ readTemplateFile = function (evt) {
                 arResult["Uk"] = Number(document.getElementById("Uk").value);
                 arResult["Inom"] = Number(document.getElementById("Inom").value);
                 arResult["ImUc"] = Number(document.getElementById("Impedance_Uc").value);
-
+                arResult["ImIc"] = Number(document.getElementById("Impedance_Ic").value);
 
             /* ========== Сопротивление обмоток постоянному току ========== */
             for (var i = 0; i < 15; i++) {

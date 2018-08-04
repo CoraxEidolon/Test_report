@@ -40,6 +40,11 @@ input {
     font-size: 1.5em;
 }
 
+.Off{
+    display: none;
+}
+
+
 .InputGood{
     color: white;
     background-color: #068e03;
@@ -58,6 +63,7 @@ input {
     top: -0px;
     border: 2px solid rgba(252, 255, 2255, 1); /* Ширина вид и цвет рамки */
     border-radius: 50px 50px;
+    z-index: 1000;
 
 }
 /* ____________Кнопки____________ */

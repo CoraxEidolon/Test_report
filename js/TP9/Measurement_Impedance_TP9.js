@@ -16,11 +16,12 @@ function Impedance() {
     }
 
     var Uc = Number(document.getElementById("Impedance_Uc").value);
+    var Ic = Number(document.getElementById("Impedance_Ic").value);
     for (var i = 0; i < strok; i++) {
         table[i][0] = Number(document.getElementById("Impedance_" + i + "_0").value);
         table[i][2] = Number(document.getElementById("Impedance_" + i + "_2").value);
         table[i][1] = Uc * table[i][0]; //U
-        table[i][3] = Uc * table[i][2]; //I
+        table[i][3] = Ic * table[i][2]; //I
     }
 
     for (var i = 0; i < strok; i++) {

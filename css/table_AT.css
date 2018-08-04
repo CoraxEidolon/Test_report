@@ -23,3 +23,9 @@
     background-color: rgba(139, 177, 17, 0.16);
     padding: 15px;
 }
+#DivisionsOnOf{
+    width: 15px;
+    transform:scale(2);
+    opacity:0.9;
+    cursor:pointer;
+}
